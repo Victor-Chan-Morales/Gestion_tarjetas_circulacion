@@ -2,69 +2,48 @@
    ESTILOS GENERALES Y VENTANA PRINCIPAL
    ========================================================================== */
 QMainWindow, QWidget {
-    background-color: #08111F;
-    font-family: "Segoe UI", Arial, sans-serif;
-    color: #E2E8F0;
+    background-color: #0B0E14;
+    font-family: "Segoe UI", "Inter", -apple-system, sans-serif;
+    color: #F8FAFC;
 }
 
 /* ==========================================================================
    SIDEBAR (BARRA LATERAL IZQUIERDA)
    ========================================================================== */
 QWidget#sidebar, QWidget[objectName="sidebar"] {
-    background-color: #091826;
+    background-color: #0F131C;
     border: none;
+    border-right: 1px solid #1E2532;
 }
 
 QWidget#sidebar QLabel {
-    color: #E2E8F0;
-}
-
-/* Botones del Menú Lateral */
-QPushButton#menuButton, QWidget#sidebar QPushButton {
-    background-color: transparent;
-    color: #A5B4FC;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 15px;
-    text-align: left;
-    font-size: 14px;
-}
-
-QPushButton#menuButton:hover, QWidget#sidebar QPushButton:hover {
-    background-color: #102D4B;
-    color: #FFFFFF;
-}
-
-QPushButton#menuButton:checked, QWidget#sidebar QPushButton:checked {
-    background-color: #17394D;
-    color: #FFFFFF;
-    font-weight: bold;
-    border: 1px solid #2563EB;
+    color: #F8FAFC;
 }
 
 /* ==========================================================================
    CONTENEDORES OSCUROS (TARJETAS Y TABLAS)
    ========================================================================== */
 QWidget#kpiCard, QWidget[objectName="kpiCard"] {
-    background-color: #0F172A;
-    border: 1px solid #1F2937;
+    background-color: #121822;
+    border: 1px solid #1E2532;
     border-radius: 16px;
 }
 
 QWidget#kpiCard QLabel#kpiValue {
     font-size: 28px;
-    font-weight: bold;
+    font-weight: 900;
     color: #FFFFFF;
 }
 
 QWidget#kpiCard QLabel#kpiTitle {
-    font-size: 13px;
+    font-size: 14px;
+    font-weight: 500;
     color: #94A3B8;
 }
 
 QWidget#tableContainer, QWidget[objectName="tableContainer"] {
-    background-color: #0F172A;
-    border: 1px solid #1F2937;
+    background-color: #121822;
+    border: 1px solid #1E2532;
     border-radius: 16px;
 }
 
@@ -72,66 +51,122 @@ QWidget#tableContainer, QWidget[objectName="tableContainer"] {
    TABLAS (QTABLEWIDGET)
    ========================================================================== */
 QTableWidget {
-    background-color: #0F172A;
+    background-color: #121822;
     border: none;
-    gridline-color: #172B4D;
+    gridline-color: #1E2532;
     font-size: 13px;
-    color: #E2E8F0;
+    color: #F8FAFC;
+    selection-background-color: #1E293B;
+    selection-color: #3B82F6;
+    outline: none;
 }
 
 QTableWidget::item {
-    padding: 12px;
-    border-bottom: 1px solid #172B4D;
+    padding: 12px 16px;
+    border-bottom: 1px solid #1E2532;
 }
 
 QTableWidget::item:selected {
-    background-color: #1B3A5C;
-    color: #FFFFFF;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #60A5FA;
 }
 
 QHeaderView::section {
-    background-color: #0F172A;
-    color: #A5B4FC;
-    padding: 10px;
-    font-weight: bold;
+    background-color: #0F131C;
+    color: #94A3B8;
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
     border: none;
-    border-bottom: 2px solid #1F2937;
+    border-bottom: 1px solid #1E2532;
+    border-right: 1px solid #1E2532;
+}
+
+QTableCornerButton::section {
+    background-color: #0F131C;
+    border: none;
+    border-bottom: 1px solid #1E2532;
 }
 
 /* ==========================================================================
    COMPONENTES DE FORMULARIOS (INPUTS Y BUSCADORES)
    ========================================================================== */
 QLineEdit, QComboBox {
-    background-color: #0E1726;
-    border: 1px solid #1F2937;
+    background-color: #0F131C;
+    border: 1px solid #1E2532;
     border-radius: 10px;
     padding: 10px 14px;
-    font-size: 13px;
-    color: #E2E8F0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #F8FAFC;
 }
 
 QLineEdit:focus, QComboBox:focus {
-    border: 1px solid #2563EB;
-    background-color: #102134;
+    border: 1px solid #3B82F6;
+    background-color: #131A26;
+}
+
+QLineEdit:hover:!focus, QComboBox:hover:!focus {
+    border: 1px solid #2A3441;
 }
 
 QComboBox::drop-down {
     border: none;
+    width: 30px;
+}
+
+QComboBox QAbstractItemView {
+    background: #0F131C;
+    color: #F8FAFC;
+    border: 1px solid #1E2532;
+    border-radius: 8px;
+    selection-background-color: #1E293B;
+    selection-color: #3B82F6;
+    outline: none;
 }
 
 /* ==========================================================================
-   BOTONES DE ACCIÓN (NUEVA TARJETA, ETC)
+   SCROLLBARS
    ========================================================================== */
-QPushButton#primaryButton {
-    background-color: #2563EB;
-    color: #E2E8F0;
+QScrollBar:vertical {
     border: none;
-    border-radius: 10px;
-    padding: 10px 18px;
-    font-weight: bold;
-    font-size: 13px;
+    background: #0B0E14;
+    width: 8px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:vertical {
+    background: #1E2532;
+    min-height: 20px;
+    border-radius: 4px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #3B82F6;
+}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {
+    background: none;
 }
 
-QPushButton#primaryButton:hover {
-    background-color: #1D4ED8;
+QScrollBar:horizontal {
+    border: none;
+    background: #0B0E14;
+    height: 8px;
+    margin: 0px 0px 0px 0px;
+}
+QScrollBar::handle:horizontal {
+    background: #1E2532;
+    min-width: 20px;
+    border-radius: 4px;
+}
+QScrollBar::handle:horizontal:hover {
+    background: #3B82F6;
+}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {
+    width: 0px;
+}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {
+    background: none;
 }

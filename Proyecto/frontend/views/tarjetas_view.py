@@ -46,32 +46,33 @@ class TarjetasView(QWidget):
         main_layout.setContentsMargins(30, 26, 30, 30)
         main_layout.setSpacing(22)
 
-        self.setStyleSheet("background-color:#08111F;")
+        self.setStyleSheet("background-color:#0B0E14;")
 
         encabezado = QHBoxLayout()
         titulos = QVBoxLayout()
 
         titulo = QLabel("Tarjetas de Circulacion")
-        titulo.setStyleSheet("color:#E2E8F0; font-size:23px; font-weight:800;")
+        titulo.setStyleSheet("color:#F8FAFC; font-size:26px; font-weight:900; letter-spacing:-0.5px;")
         descripcion = QLabel("Consulta y gestion de todas las tarjetas registradas")
-        descripcion.setStyleSheet("color:#94A3B8; font-size:15px;")
+        descripcion.setStyleSheet("color:#94A3B8; font-size:14px; font-weight:500;")
 
         titulos.addWidget(titulo)
         titulos.addWidget(descripcion)
 
         self.btn_nueva = QPushButton("+  Nueva Tarjeta")
         self.btn_nueva.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.btn_nueva.setFixedHeight(34)
+        self.btn_nueva.setFixedHeight(42)
         self.btn_nueva.setStyleSheet("""
             QPushButton{
-                background-color:#2563EB;
-                color:#E2E8F0;
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #3B82F6, stop:1 #6366F1);
+                color:#FFFFFF;
                 border:none;
-                padding:0 14px;
-                border-radius:8px;
+                padding:0 20px;
+                border-radius:10px;
                 font-weight:700;
+                font-size:14px;
             }
-            QPushButton:hover{background-color:#1D4ED8;}
+            QPushButton:hover{background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #2563EB, stop:1 #4F46E5);}
         """)
         self.btn_nueva.clicked.connect(self.abrir_nueva_tarjeta)
 
@@ -82,9 +83,9 @@ class TarjetasView(QWidget):
         card = QFrame()
         card.setStyleSheet("""
             QFrame{
-                background:#0F172A;
-                border-radius:14px;
-                border:1px solid #1F2937;
+                background:#121822;
+                border-radius:16px;
+                border:1px solid #1E2532;
             }
         """)
 
@@ -97,45 +98,51 @@ class TarjetasView(QWidget):
 
         self.input_busqueda = QLineEdit()
         self.input_busqueda.setPlaceholderText("Buscar por codigo, propietario, placa o VIN...")
-        self.input_busqueda.setFixedHeight(36)
+        self.input_busqueda.setFixedHeight(40)
         self.input_busqueda.setStyleSheet("""
             QLineEdit{
-                border:1px solid #1F2937;
-                border-radius:9px;
+                border:1px solid #1E2532;
+                border-radius:10px;
                 padding-left:14px;
-                font-size:13px;
-                background:#0E1726;
-                color:#E2E8F0;
+                font-size:14px;
+                font-weight:500;
+                background:#0F131C;
+                color:#F8FAFC;
             }
-            QLineEdit:focus{border-color:#2563EB;}
+            QLineEdit:focus{border-color:#3B82F6; background:#131A26;}
+            QLineEdit:hover:!focus{border-color:#2A3441;}
         """)
         self.input_busqueda.textChanged.connect(self.aplicar_filtros)
 
         self.combo_estado = QComboBox()
-        self.combo_estado.setFixedHeight(36)
+        self.combo_estado.setFixedHeight(40)
         self.combo_estado.currentTextChanged.connect(self.aplicar_filtros)
 
         self.combo_uso = QComboBox()
-        self.combo_uso.setFixedHeight(36)
+        self.combo_uso.setFixedHeight(40)
         self.combo_uso.currentTextChanged.connect(self.aplicar_filtros)
 
         combo_style = """
             QComboBox{
-                border:1px solid #1F2937;
-                border-radius:9px;
+                border:1px solid #1E2532;
+                border-radius:10px;
                 padding:7px 12px;
-                background:#0E1726;
+                background:#0F131C;
                 min-width:135px;
-                color:#E2E8F0;
+                font-size:14px;
+                font-weight:500;
+                color:#F8FAFC;
             }
-            QComboBox:hover{border:1px solid #2563EB;}
-            QComboBox::drop-down{border:none; width:24px;}
+            QComboBox:focus{border-color:#3B82F6; background:#131A26;}
+            QComboBox:hover:!focus{border-color:#2A3441;}
+            QComboBox::drop-down{border:none; width:30px;}
             QComboBox QAbstractItemView{
-                background:#0F172A;
-                color:#E2E8F0;
-                selection-background-color:#17324B;
-                selection-color:#E2E8F0;
-                border:1px solid #1F2937;
+                background:#0F131C;
+                color:#F8FAFC;
+                selection-background-color:#1E293B;
+                selection-color:#3B82F6;
+                border:1px solid #1E2532;
+                border-radius:8px;
             }
         """
         self.combo_estado.setStyleSheet(combo_style)
@@ -169,23 +176,25 @@ class TarjetasView(QWidget):
         self.table.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.table.setStyleSheet("""
             QTableWidget{
-                background:#0F172A;
+                background:#121822;
                 border:none;
-                gridline-color:#172B4D;
-                color:#E2E8F0;
+                gridline-color:#1E2532;
+                color:#F8FAFC;
                 font-size:13px;
             }
             QTableWidget::item{
-                border-bottom:1px solid #1F2937;
-                padding:7px;
+                border-bottom:1px solid #1E2532;
+                padding:12px;
             }
             QHeaderView::section{
-                background:#0F172A;
+                background:#0F131C;
                 border:none;
-                border-bottom:1px solid #1F2937;
-                padding:12px 7px;
+                border-bottom:1px solid #1E2532;
+                padding:14px 12px;
                 font-weight:700;
-                color:#A5B4FC;
+                font-size:12px;
+                color:#94A3B8;
+                text-transform:uppercase;
             }
         """)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
@@ -308,12 +317,12 @@ class TarjetasView(QWidget):
     def badge_estado(self, estado):
         estado_limpio = (estado or "").lower()
         if estado_limpio == "activa":
-            return self.badge(estado, "#4ADE80", "#4ADE80", "white")
+            return self.badge(estado, "#10B981", "#10B981", "white")
         if "vencida" in estado_limpio:
-            return self.badge(estado, "#F472B6", "#F472B6", "white")
+            return self.badge(estado, "#F43F5E", "#F43F5E", "white")
         if "suspendida" in estado_limpio:
-            return self.badge(estado, "#FACC15", "#FACC15", "#0F172A")
-        return self.badge(estado, "#1F2937", "#1F2937", "#94A3B8")
+            return self.badge(estado, "#F59E0B", "#F59E0B", "white")
+        return self.badge(estado, "#1E2532", "#1E2532", "#94A3B8")
 
     def acciones_widget(self, tarjeta):
         contenedor = QFrame()

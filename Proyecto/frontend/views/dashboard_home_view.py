@@ -34,11 +34,11 @@ class DashboardHomeView(QWidget):
         clear_layout(self.layout)
         title = QVBoxLayout()
         lbl_dash = label("Dashboard", bold=True)
-        lbl_dash.setStyleSheet("color:#E2E8F0; font-size:23px; font-weight:800; background:transparent; border:none;")
+        lbl_dash.setStyleSheet("color:#F8FAFC; font-size:26px; font-weight:900; background:transparent; border:none; letter-spacing:-0.5px;")
         title.addWidget(lbl_dash)
         
         lbl_res = label("Resumen general de tarjetas de circulacion", muted=True)
-        lbl_res.setStyleSheet("color:#94A3B8; font-size:15px; background:transparent; border:none;")
+        lbl_res.setStyleSheet("color:#94A3B8; font-size:14px; background:transparent; border:none; font-weight:500;")
         title.addWidget(lbl_res)
         self.layout.addLayout(title)
 
@@ -57,7 +57,7 @@ class DashboardHomeView(QWidget):
             box_layout = QVBoxLayout()
             box_layout.setContentsMargins(18, 16, 18, 16)
             value_label = label(str(value), bold=True)
-            value_label.setStyleSheet("font-size:24px; font-weight:800; color:#E2E8F0; border:none; background:transparent;")
+            value_label.setStyleSheet("font-size:28px; font-weight:900; color:#F8FAFC; border:none; background:transparent;")
             box_layout.addWidget(value_label)
             box_layout.addWidget(label(title_text, muted=True))
             box.setLayout(box_layout)
@@ -66,16 +66,28 @@ class DashboardHomeView(QWidget):
 
         latest = card()
         grid = QGridLayout()
-        grid.setContentsMargins(18, 16, 18, 16)
-        grid.setHorizontalSpacing(22)
-        grid.addWidget(label("Ultimas Tarjetas", bold=True), 0, 0, 1, 4)
+        grid.setContentsMargins(20, 20, 20, 20)
+        grid.setHorizontalSpacing(24)
+        grid.setVerticalSpacing(14)
+        grid.addWidget(label("Ultimas Tarjetas Registradas", bold=True), 0, 0, 1, 4)
         for row, tarjeta in enumerate(self.tarjetas[:6], start=1):
             marca = dato(tarjeta, "vehiculo", "linea", "marca", "nombre_marca")
             linea = dato(tarjeta, "vehiculo", "linea", "nombre_linea")
             grid.addWidget(label(dato(tarjeta, "codigo_identificador")), row, 0)
             grid.addWidget(label(dato(tarjeta, "vehiculo", "placa")), row, 1)
             grid.addWidget(label(f"{marca} {linea}".strip()), row, 2)
-            grid.addWidget(label(dato(tarjeta, "estado", "nombre_estado"), muted=True), row, 3)
+            
+            estado = dato(tarjeta, "estado", "nombre_estado")
+            estado_lbl = label(estado, muted=True)
+            if estado.lower() == "activa":
+                estado_lbl.setStyleSheet("color:#10B981; font-weight:600; font-size:13px;")
+            elif "vencida" in estado.lower():
+                estado_lbl.setStyleSheet("color:#F43F5E; font-weight:600; font-size:13px;")
+            else:
+                estado_lbl.setStyleSheet("color:#F59E0B; font-weight:600; font-size:13px;")
+                
+            grid.addWidget(estado_lbl, row, 3)
+            
         if not self.tarjetas:
             grid.addWidget(label("No hay tarjetas registradas todavia.", muted=True), 1, 0, 1, 4)
         latest.setLayout(grid)
