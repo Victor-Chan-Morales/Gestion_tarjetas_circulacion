@@ -1,0 +1,137 @@
+/* ==========================================================================   
+   ESTILOS GENERALES Y VENTANA PRINCIPAL
+   ========================================================================== */
+QMainWindow, QWidget {
+    background-color: #08111F;
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #E2E8F0;
+}
+
+/* ==========================================================================
+   SIDEBAR (BARRA LATERAL IZQUIERDA)
+   ========================================================================== */
+QWidget#sidebar, QWidget[objectName="sidebar"] {
+    background-color: #091826;
+    border: none;
+}
+
+QWidget#sidebar QLabel {
+    color: #E2E8F0;
+}
+
+/* Botones del Menú Lateral */
+QPushButton#menuButton, QWidget#sidebar QPushButton {
+    background-color: transparent;
+    color: #A5B4FC;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 14px;
+}
+
+QPushButton#menuButton:hover, QWidget#sidebar QPushButton:hover {
+    background-color: #102D4B;
+    color: #FFFFFF;
+}
+
+QPushButton#menuButton:checked, QWidget#sidebar QPushButton:checked {
+    background-color: #17394D;
+    color: #FFFFFF;
+    font-weight: bold;
+    border: 1px solid #2563EB;
+}
+
+/* ==========================================================================
+   CONTENEDORES OSCUROS (TARJETAS Y TABLAS)
+   ========================================================================== */
+QWidget#kpiCard, QWidget[objectName="kpiCard"] {
+    background-color: #0F172A;
+    border: 1px solid #1F2937;
+    border-radius: 16px;
+}
+
+QWidget#kpiCard QLabel#kpiValue {
+    font-size: 28px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+QWidget#kpiCard QLabel#kpiTitle {
+    font-size: 13px;
+    color: #94A3B8;
+}
+
+QWidget#tableContainer, QWidget[objectName="tableContainer"] {
+    background-color: #0F172A;
+    border: 1px solid #1F2937;
+    border-radius: 16px;
+}
+
+/* ==========================================================================
+   TABLAS (QTABLEWIDGET)
+   ========================================================================== */
+QTableWidget {
+    background-color: #0F172A;
+    border: none;
+    gridline-color: #172B4D;
+    font-size: 13px;
+    color: #E2E8F0;
+}
+
+QTableWidget::item {
+    padding: 12px;
+    border-bottom: 1px solid #172B4D;
+}
+
+QTableWidget::item:selected {
+    background-color: #1B3A5C;
+    color: #FFFFFF;
+}
+
+QHeaderView::section {
+    background-color: #0F172A;
+    color: #A5B4FC;
+    padding: 10px;
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid #1F2937;
+}
+
+/* ==========================================================================
+   COMPONENTES DE FORMULARIOS (INPUTS Y BUSCADORES)
+   ========================================================================== */
+QLineEdit, QComboBox {
+    background-color: #0E1726;
+    border: 1px solid #1F2937;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #E2E8F0;
+}
+
+QLineEdit:focus, QComboBox:focus {
+    border: 1px solid #2563EB;
+    background-color: #102134;
+}
+
+QComboBox::drop-down {
+    border: none;
+}
+
+/* ==========================================================================
+   BOTONES DE ACCIÓN (NUEVA TARJETA, ETC)
+   ========================================================================== */
+QPushButton#primaryButton {
+    background-color: #2563EB;
+    color: #E2E8F0;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-weight: bold;
+    font-size: 13px;
+}
+
+QPushButton#primaryButton:hover {
+    background-color: #1D4ED8;
+}

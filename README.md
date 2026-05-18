@@ -1,2 +1,60 @@
-# Gestion_tarjetas_circulacion
-Proyecto final de BD1 el cual es un gestor de tarjetas de circulación 
+# Gestor de Tarjetas de Circulación
+
+Bienvenido, este es un proyecto del curso de Base de datos 1, el cual gestiona el registro de vehículos, así también las tarjetas de circulación de los mismos. Este proyecto combina un backend ligero con Supabase y un frontend de escritorio moderno en PyQt6 para mantener vehículos, propietarios y estados en línea de forma intuitiva.
+
+## 🌟 Qué hace
+
+- Administra vehículos, propietarios y tarjetas de circulación.
+- Crea nuevas tarjetas con verificación de VIN y placa.
+- Cambia dueño, motor o color desde el módulo de mantenimiento.
+- Desactiva y reactiva tarjetas cuando se requiera.
+- Guarda un historial de cambios detallado para cada operación.
+
+## 🧩 Estructura principal
+
+- `Proyecto/backend/`: API y lógica de negocio.
+- `Proyecto/frontend/`: aplicación de escritorio en PyQt6.
+- `Proyecto/Docs/`: documentación, datos de ejemplo y esquema de base de datos.
+
+
+## 🚀 Cómo ejecutarlo
+
+1. Instala las dependencias del proyecto:
+   ```bash
+   pip install -r Proyecto/requirements.txt
+   ```
+2. Configura tu `.env` con las variables de Supabase:
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY` o `SUPABASE_KEY`
+3. Inicia el backend:
+   ```bash
+   python Proyecto/backend/main.py
+   ```
+4. En otra terminal, arranca el frontend:
+   ```bash
+   python Proyecto/frontend/main.py
+   ```
+
+> El frontend se conecta por defecto al backend en `http://127.0.0.1:8000/api`.
+
+## 🎯 Lo más destacado
+
+- Diseño modular: backend separado de frontend.
+- Supabase REST como motor de datos.
+- Doble modo de backend: FastAPI cuando esté disponible y servidor HTTP simple como respaldo.
+- UX adaptada a escritorio con temas oscuros y botones de baja tensión visual.
+- Registro de historial para cada cambio crítico.
+
+## 💡 Idea rápida
+
+Si quieres extender el sistema, puedes agregar:
+- validación de usuario en el backend,
+- filtros avanzados en la vista de tarjetas,
+- o una pantalla de auditoría para ver sólo los cambios de estado.
+
+## 📁 ¿Dónde empezar?
+
+- Para backend: `Proyecto/backend/services/tarjetas_service.py`
+- Para frontend: `Proyecto/frontend/views/mantenimiento_view.py`
+- Para datos: `Proyecto/Docs/db_schema.sql`
+
