@@ -1,3 +1,0 @@
-python -m uvicorn backend.main:app --reload
-
-cd frontend python main.py
