@@ -107,7 +107,13 @@ El frontend usa `frontend/services/api_client.py` para comunicarse con el backen
 1. Instalar dependencias desde `requirements.txt` (`pip install -r requirements.txt`).
 2. Configurar `.env` con la variable `DATABASE_URL` conectada a tu PostgreSQL local.
 3. Asegurarse de que la base de datos PostgreSQL local esté corriendo.
-4. Ejecutar el backend: `python backend/main.py`.
-5. En una segunda terminal, ejecutar el frontend: `python frontend/main.py`.
+4. Abrir una terminal, entrar a la carpeta principal (`cd Proyecto`) y ejecutar el backend:
+   ```bash
+   python -m uvicorn backend.main:app --reload
+   ```
+5. En una segunda terminal, entrar a la carpeta (`cd Proyecto`) y ejecutar el frontend:
+   ```bash
+   python frontend/main.py
+   ```
 
 > Nota: la aplicación frontend consume el backend en `API_BASE_URL`, que por defecto apunta a `http://127.0.0.1:8000/api`.

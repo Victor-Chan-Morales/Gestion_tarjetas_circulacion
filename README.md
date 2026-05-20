@@ -26,13 +26,17 @@ Bienvenido, este es un proyecto del curso de Base de datos 1, el cual gestiona e
    ```
 2. Configura tu `.env` con la URL de tu base de datos PostgreSQL:
    - `DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/tarjetas_db`
-3. Inicia el backend:
+3. Entra a la carpeta del proyecto:
    ```bash
-   python Proyecto/backend/main.py
+   cd Proyecto
    ```
-4. En otra terminal, arranca el frontend:
+4. Inicia el backend (servidor FastAPI):
    ```bash
-   python Proyecto/frontend/main.py
+   python -m uvicorn backend.main:app --reload
+   ```
+5. En otra terminal, arranca el frontend (recuerda hacer `cd Proyecto` primero):
+   ```bash
+   python frontend/main.py
    ```
 
 > El frontend se conecta por defecto al backend en `http://127.0.0.1:8000/api`.
