@@ -305,6 +305,15 @@ class MantenimientoView(QWidget):
         try:
             if not self.propietario_nuevo.currentData():
                 raise ValueError("Seleccione el nuevo propietario.")
+                
+            confirm = QMessageBox.question(
+                self, "Confirmar", 
+                "¿Esta seguro que desea registrar este cambio de dueño?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if confirm != QMessageBox.StandardButton.Yes:
+                return
+                
             registrar_cambio_dueno({
                 "id_tarjeta": self.tarjeta["id_tarjeta"],
                 "id_propietario": self.propietario_nuevo.currentData(),
@@ -319,6 +328,15 @@ class MantenimientoView(QWidget):
         try:
             if not self.motor_nuevo.text().strip():
                 raise ValueError("Ingrese el numero del nuevo motor.")
+                
+            confirm = QMessageBox.question(
+                self, "Confirmar", 
+                "¿Esta seguro que desea registrar este cambio de motor?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if confirm != QMessageBox.StandardButton.Yes:
+                return
+                
             registrar_cambio_motor({
                 "id_tarjeta": self.tarjeta["id_tarjeta"],
                 "vin": dato(self.tarjeta, "vehiculo", "vin"),
@@ -335,6 +353,15 @@ class MantenimientoView(QWidget):
         try:
             if dato(self.tarjeta, "estado", "nombre_estado") == "Activa":
                 raise ValueError("La tarjeta ya se encuentra activa.")
+                
+            confirm = QMessageBox.question(
+                self, "Confirmar", 
+                "¿Esta seguro que desea reactivar esta tarjeta?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if confirm != QMessageBox.StandardButton.Yes:
+                return
+                
             reactivar_tarjeta({
                 "id_tarjeta": self.tarjeta["id_tarjeta"],
                 "observaciones": "Reactivacion desde mantenimiento",
@@ -347,6 +374,15 @@ class MantenimientoView(QWidget):
         try:
             if not self.color_nuevo.currentData():
                 raise ValueError("Seleccione el nuevo color.")
+                
+            confirm = QMessageBox.question(
+                self, "Confirmar", 
+                "¿Esta seguro que desea registrar este cambio de color?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if confirm != QMessageBox.StandardButton.Yes:
+                return
+                
             registrar_cambio_color({
                 "id_tarjeta": self.tarjeta["id_tarjeta"],
                 "vin": dato(self.tarjeta, "vehiculo", "vin"),

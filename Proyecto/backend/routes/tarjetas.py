@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from backend.database.supabase_client import SupabaseError
+import psycopg2
 from backend.services import tarjetas_service
 
 
@@ -12,8 +12,8 @@ def handle(fn, *args, **kwargs):
         return fn(*args, **kwargs)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-    except SupabaseError as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    except psycopg2.Error as exc:
+        raise HTTPException(status_code=500, detail=f"Error en la base de datos: {str(exc)}") from exc
 
 
 @router.get("/health")
@@ -97,3 +97,23 @@ def historial():
 @router.delete("/tarjetas/{id_tarjeta}")
 def eliminar_tarjeta(id_tarjeta: int):
     return handle(tarjetas_service.eliminar_tarjeta, id_tarjeta)
+
+
+@router.post("/catalogos/marca")
+def crear_marca(payload: dict):
+    return handle(tarjetas_service.crear_marca, payload["nombre"])
+
+
+@router.post("/catalogos/linea")
+def crear_linea(payload: dict):
+    return handle(tarjetas_service.crear_linea, payload["id_marca"], payload["nombre"])
+
+
+@router.post("/catalogos/tipo")
+def crear_tipo_vehiculo(payload: dict):
+    return handle(tarjetas_service.crear_tipo_vehiculo, payload["nombre"])
+
+
+@router.post("/catalogos/color")
+def crear_color(payload: dict):
+    return handle(tarjetas_service.crear_color, payload["nombre"])

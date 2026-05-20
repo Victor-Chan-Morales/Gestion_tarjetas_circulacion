@@ -85,6 +85,22 @@ def eliminar_tarjeta(id_tarjeta):
     return _http(f"/tarjetas/{id_tarjeta}", method="DELETE")
 
 
+def crear_marca(nombre):
+    return _http("/catalogos/marca", method="POST", payload={"nombre": nombre})
+
+
+def crear_linea(id_marca, nombre):
+    return _http("/catalogos/linea", method="POST", payload={"id_marca": id_marca, "nombre": nombre})
+
+
+def crear_tipo_vehiculo(nombre):
+    return _http("/catalogos/tipo", method="POST", payload={"nombre": nombre})
+
+
+def crear_color(nombre):
+    return _http("/catalogos/color", method="POST", payload={"nombre": nombre})
+
+
 def catalogos_demo():
     return {
         "marcas": [

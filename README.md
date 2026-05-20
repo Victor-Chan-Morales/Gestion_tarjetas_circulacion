@@ -1,6 +1,6 @@
 # Gestor de Tarjetas de Circulación
 
-Bienvenido, este es un proyecto del curso de Base de datos 1, el cual gestiona el registro de vehículos, así también las tarjetas de circulación de los mismos. Este proyecto combina un backend ligero con Supabase y un frontend de escritorio moderno en PyQt6 para mantener vehículos, propietarios y estados en línea de forma intuitiva.
+Bienvenido, este es un proyecto del curso de Base de datos 1, el cual gestiona el registro de vehículos, así también las tarjetas de circulación de los mismos. Este proyecto combina un backend en Python y un frontend de escritorio moderno en PyQt6 para mantener vehículos, propietarios y estados en línea de forma intuitiva, conectándose a una base de datos PostgreSQL local.
 
 ## 🌟 Qué hace
 
@@ -9,6 +9,7 @@ Bienvenido, este es un proyecto del curso de Base de datos 1, el cual gestiona e
 - Cambia dueño, motor o color desde el módulo de mantenimiento.
 - Desactiva y reactiva tarjetas cuando se requiera.
 - Guarda un historial de cambios detallado para cada operación.
+- Gestión dinámica de catálogos y validaciones de seguridad paso a paso.
 
 ## 🧩 Estructura principal
 
@@ -23,9 +24,8 @@ Bienvenido, este es un proyecto del curso de Base de datos 1, el cual gestiona e
    ```bash
    pip install -r Proyecto/requirements.txt
    ```
-2. Configura tu `.env` con las variables de Supabase:
-   - `SUPABASE_URL`
-   - `SUPABASE_SERVICE_ROLE_KEY` o `SUPABASE_KEY`
+2. Configura tu `.env` con la URL de tu base de datos PostgreSQL:
+   - `DATABASE_URL=postgresql://usuario:contraseña@localhost:5432/tarjetas_db`
 3. Inicia el backend:
    ```bash
    python Proyecto/backend/main.py
@@ -40,7 +40,7 @@ Bienvenido, este es un proyecto del curso de Base de datos 1, el cual gestiona e
 ## 🎯 Lo más destacado
 
 - Diseño modular: backend separado de frontend.
-- Supabase REST como motor de datos.
+- Base de datos relacional robusta (PostgreSQL).
 - Doble modo de backend: FastAPI cuando esté disponible y servidor HTTP simple como respaldo.
 - UX adaptada a escritorio con temas oscuros y botones de baja tensión visual.
 - Registro de historial para cada cambio crítico.

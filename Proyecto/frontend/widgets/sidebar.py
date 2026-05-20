@@ -33,7 +33,7 @@ class Sidebar(QFrame):
 
         texto_header = QVBoxLayout()
         texto_header.setSpacing(0)
-        title = QLabel("AutoFlow")
+        title = QLabel("Registro Vehicular")
         title.setStyleSheet("font-size:18px; font-weight:800; color:#F8FAFC; letter-spacing: -0.5px;")
         subtitle = QLabel("Gestión Vehicular")
         subtitle.setStyleSheet("font-size:12px; color:#94A3B8; font-weight: 500;")

@@ -34,8 +34,8 @@ CREATE TABLE estado (
 CREATE TABLE propietario (
     id_propietario SERIAL PRIMARY KEY,
     nombre TEXT NOT NULL,
-    nit TEXT NOT NULL,
-    cui TEXT NOT NULL
+    nit TEXT NOT NULL UNIQUE,
+    cui TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE vehiculo (

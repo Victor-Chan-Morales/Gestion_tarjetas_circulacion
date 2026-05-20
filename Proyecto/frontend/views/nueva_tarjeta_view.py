@@ -1,6 +1,6 @@
-from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QStackedWidget, QMessageBox
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QStackedWidget, QMessageBox, QInputDialog
 
-from services.api_client import crear_tarjeta, obtener_catalogos, vigencia_un_anio
+from services.api_client import crear_tarjeta, obtener_catalogos, vigencia_un_anio, crear_marca, crear_linea, crear_tipo_vehiculo, crear_color
 from widgets.ui_helpers import BLUE, GREEN, PAGE_BG, card, combo, input_field, label, page_title, primary_button, secondary_button
 
 
@@ -84,13 +84,29 @@ class NuevaTarjetaView(QWidget):
         self.marca.currentIndexChanged.connect(self.actualizar_lineas)
         self.linea.currentIndexChanged.connect(self.actualizar_tipos_por_linea)
 
+        btn_add_marca = secondary_button("+")
+        btn_add_marca.setFixedWidth(30)
+        btn_add_marca.clicked.connect(self.agregar_marca)
+
+        btn_add_linea = secondary_button("+")
+        btn_add_linea.setFixedWidth(30)
+        btn_add_linea.clicked.connect(self.agregar_linea)
+
+        btn_add_tipo = secondary_button("+")
+        btn_add_tipo.setFixedWidth(30)
+        btn_add_tipo.clicked.connect(self.agregar_tipo)
+
+        btn_add_color = secondary_button("+")
+        btn_add_color.setFixedWidth(30)
+        btn_add_color.clicked.connect(self.agregar_color)
+
         self._add_field(grid, 0, 0, "VIN (Numero de Identificacion)", self.vin, 2)
         self._add_field(grid, 0, 2, "Placa sin prefijo", self.placa, 2)
-        self._add_field(grid, 2, 0, "Marca", self.marca)
-        self._add_field(grid, 2, 1, "Linea", self.linea)
+        self._add_field(grid, 2, 0, "Marca", self.marca, extra_widget=btn_add_marca)
+        self._add_field(grid, 2, 1, "Linea", self.linea, extra_widget=btn_add_linea)
         self._add_field(grid, 2, 2, "Modelo (Ano)", self.modelo, 2)
-        self._add_field(grid, 4, 0, "Tipo de Vehiculo", self.tipo)
-        self._add_field(grid, 4, 1, "Color", self.color)
+        self._add_field(grid, 4, 0, "Tipo de Vehiculo", self.tipo, extra_widget=btn_add_tipo)
+        self._add_field(grid, 4, 1, "Color", self.color, extra_widget=btn_add_color)
         self._add_field(grid, 4, 2, "Asientos", self.asientos, 2)
         self._add_field(grid, 6, 0, "Cilindros", self.cilindros)
         self._add_field(grid, 6, 1, "Cilindrada (CC)", self.cc)
@@ -128,10 +144,15 @@ class NuevaTarjetaView(QWidget):
         self.cui = input_field("Ej: 1234567890101")
         self.propietario_existente.currentIndexChanged.connect(self.cargar_propietario)
 
+        self.buscar_nit = input_field("Ingrese NIT a buscar...")
+        self.btn_buscar_nit = secondary_button("Buscar")
+        self.btn_buscar_nit.clicked.connect(self.buscar_propietario_por_nit)
+
         grid = QGridLayout()
         grid.setHorizontalSpacing(16)
         grid.setVerticalSpacing(14)
-        self._add_field(grid, 0, 0, "Propietario Existente", self.propietario_existente, 2)
+        self._add_field(grid, 0, 0, "Buscar por NIT", self.buscar_nit, extra_widget=self.btn_buscar_nit)
+        self._add_field(grid, 0, 2, "Propietario Existente", self.propietario_existente, 2)
         grid.addWidget(label("--------------  O REGISTRAR NUEVO PROPIETARIO  --------------", muted=True), 2, 0, 1, 4)
         self._add_field(grid, 3, 0, "Nombre Completo", self.nombre_propietario, 4)
         self._add_field(grid, 5, 0, "NIT", self.nit, 2)
@@ -213,9 +234,16 @@ class NuevaTarjetaView(QWidget):
         frame.setLayout(layout)
         return frame
 
-    def _add_field(self, grid, row, col, text, widget, span=1):
+    def _add_field(self, grid, row, col, text, widget, span=1, extra_widget=None):
         grid.addWidget(label(text), row, col, 1, span)
-        grid.addWidget(widget, row + 1, col, 1, span)
+        if extra_widget:
+            ly = QHBoxLayout()
+            ly.setContentsMargins(0, 0, 0, 0)
+            ly.addWidget(widget)
+            ly.addWidget(extra_widget)
+            grid.addLayout(ly, row + 1, col, 1, span)
+        else:
+            grid.addWidget(widget, row + 1, col, 1, span)
 
     def _fill_combo(self, cb, data, id_key, text_key, keep_first=False):
         first = cb.itemText(0) if keep_first and cb.count() else None
@@ -277,7 +305,33 @@ class NuevaTarjetaView(QWidget):
             self.nit.setText(propietario["nit"])
             self.cui.setText(propietario["cui"])
 
+    def buscar_propietario_por_nit(self):
+        nit_buscado = self.buscar_nit.text().strip()
+        if not nit_buscado:
+            QMessageBox.warning(self, "Atencion", "Ingrese un NIT para buscar.")
+            return
+        prop = next((p for p in self.catalogos["propietarios"] if p["nit"] == nit_buscado), None)
+        if prop:
+            idx = self.propietario_existente.findData(prop["id_propietario"])
+            if idx >= 0:
+                self.propietario_existente.setCurrentIndex(idx)
+                QMessageBox.information(self, "Encontrado", f"Propietario encontrado: {prop['nombre']}")
+        else:
+            QMessageBox.warning(self, "No encontrado", "No se encontro ningun propietario con ese NIT.")
+
     def ir_paso(self, paso):
+        if paso > self.paso:
+            try:
+                if self.paso == 0:
+                    self.validar_vehiculo()
+                if self.paso == 1:
+                    self.validar_propietario()
+                if self.paso == 0 and paso == 2:
+                    self.validar_propietario()
+            except ValueError as e:
+                QMessageBox.warning(self, "Campos incompletos", str(e))
+                return
+
         self.paso = paso
         self.stack.setCurrentIndex(paso)
         if paso == 2:
@@ -317,6 +371,15 @@ class NuevaTarjetaView(QWidget):
     def generar_tarjeta(self):
         try:
             self.validar_formulario()
+            
+            confirm = QMessageBox.question(
+                self, "Confirmar Generacion", 
+                "¿Esta seguro que desea generar esta tarjeta con los datos ingresados?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if confirm != QMessageBox.StandardButton.Yes:
+                return
+                
             payload = {
                 "id_propietario": self.propietario_existente.currentData(),
                 "propietario": {
@@ -350,7 +413,7 @@ class NuevaTarjetaView(QWidget):
         except Exception as exc:
             QMessageBox.warning(self, "No se pudo crear", f"Revise los datos o el backend.\n{exc}")
 
-    def validar_formulario(self):
+    def validar_vehiculo(self):
         for campo, nombre in [
             (self.vin, "VIN"), (self.placa, "Placa"), (self.modelo, "Modelo"),
             (self.asientos, "Asientos"), (self.ejes, "Ejes"), (self.cilindros, "Cilindros"),
@@ -368,30 +431,93 @@ class NuevaTarjetaView(QWidget):
 
         for cb, nombre in [
             (self.marca, "Marca"), (self.linea, "Linea"), (self.tipo, "Tipo de Vehiculo"),
-            (self.color, "Color"), (self.uso, "Uso del Vehiculo"),
+            (self.color, "Color"),
         ]:
             if cb.currentData() is None:
                 raise ValueError(f"Seleccione {nombre}.")
 
+        try:
+            modelo = int(self.modelo.text())
+            if modelo < 1900 or modelo > 2100:
+                raise ValueError("El modelo debe estar entre 1900 y 2100.")
+        except ValueError:
+            raise ValueError("El modelo debe ser un numero valido.")
+            
+        for campo, nombre in [(self.asientos, "asientos"), (self.ejes, "ejes"), (self.cilindros, "cilindros"), (self.cc, "cilindrada")]:
+            try:
+                if int(campo.text()) <= 0:
+                    raise ValueError(f"El campo {nombre} debe ser mayor que cero.")
+            except ValueError:
+                raise ValueError(f"El campo {nombre} debe ser un numero valido.")
+                
+        try:
+            if float(self.ton.text() or 0) < 0:
+                raise ValueError("El tonelaje no puede ser negativo.")
+        except ValueError:
+            raise ValueError("El tonelaje debe ser un numero valido.")
+
+    def validar_propietario(self):
         if not self.propietario_existente.currentData():
             for campo, nombre in [(self.nombre_propietario, "Nombre del propietario"), (self.nit, "NIT"), (self.cui, "CUI")]:
                 if not campo.text().strip():
                     raise ValueError(f"Complete el campo {nombre}.")
 
-        modelo = int(self.modelo.text())
-        if modelo < 1900 or modelo > 2100:
-            raise ValueError("El modelo debe estar entre 1900 y 2100.")
-        for campo, nombre in [(self.asientos, "asientos"), (self.ejes, "ejes"), (self.cilindros, "cilindros"), (self.cc, "cilindrada")]:
-            if int(campo.text()) <= 0:
-                raise ValueError(f"El campo {nombre} debe ser mayor que cero.")
-        if float(self.ton.text() or 0) < 0:
-            raise ValueError("El tonelaje no puede ser negativo.")
+    def validar_formulario(self):
+        self.validar_vehiculo()
+        self.validar_propietario()
+        if self.uso.currentData() is None:
+            raise ValueError("Seleccione Uso del Vehiculo.")
+
+    def agregar_marca(self):
+        text, ok = QInputDialog.getText(self, "Nueva Marca", "Nombre de la marca:")
+        if ok and text.strip():
+            try:
+                crear_marca(text)
+                self.refresh_data()
+                QMessageBox.information(self, "Exito", "Marca agregada correctamente.")
+            except Exception as e:
+                QMessageBox.warning(self, "Error", f"No se pudo agregar la marca: {e}")
+
+    def agregar_linea(self):
+        marca_id = self.marca.currentData()
+        if not marca_id:
+            QMessageBox.warning(self, "Atencion", "Debe seleccionar una marca primero.")
+            return
+        text, ok = QInputDialog.getText(self, "Nueva Linea", "Nombre de la linea:")
+        if ok and text.strip():
+            try:
+                crear_linea(marca_id, text)
+                self.refresh_data()
+                self.marca.setCurrentIndex(self.marca.findData(marca_id))
+                QMessageBox.information(self, "Exito", "Linea agregada correctamente.")
+            except Exception as e:
+                QMessageBox.warning(self, "Error", f"No se pudo agregar la linea: {e}")
+
+    def agregar_tipo(self):
+        text, ok = QInputDialog.getText(self, "Nuevo Tipo", "Nombre del tipo de vehiculo:")
+        if ok and text.strip():
+            try:
+                crear_tipo_vehiculo(text)
+                self.refresh_data()
+                QMessageBox.information(self, "Exito", "Tipo agregado correctamente.")
+            except Exception as e:
+                QMessageBox.warning(self, "Error", f"No se pudo agregar el tipo: {e}")
+
+    def agregar_color(self):
+        text, ok = QInputDialog.getText(self, "Nuevo Color", "Nombre del color:")
+        if ok and text.strip():
+            try:
+                crear_color(text)
+                self.refresh_data()
+                QMessageBox.information(self, "Exito", "Color agregado correctamente.")
+            except Exception as e:
+                QMessageBox.warning(self, "Error", f"No se pudo agregar el color: {e}")
 
     def limpiar_formulario(self):
         for campo in [
             self.vin, self.placa, self.modelo, self.asientos, self.ejes, self.cilindros,
             self.cc, self.ton, self.serie, self.chasis, self.motor,
-            self.nombre_propietario, self.nit, self.cui,
+            self.nombre_propietario, self.nit, self.cui, self.buscar_nit
         ]:
             campo.clear()
         for cb in [self.marca, self.linea, self.tipo, self.color, self.propietario_existente, self.uso]:

@@ -194,6 +194,15 @@ class DesactivacionesView(QWidget):
                 raise ValueError("Seleccione una tarjeta activa.")
             if self.motivo.currentIndex() == 0:
                 raise ValueError("Seleccione un motivo de desactivacion.")
+                
+            confirm = QMessageBox.question(
+                self, "Confirmar", 
+                "¿Esta seguro que desea desactivar esta tarjeta de forma definitiva?",
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
+            if confirm != QMessageBox.StandardButton.Yes:
+                return
+                
             desactivar_tarjeta({
                 "id_tarjeta": self.tarjeta["id_tarjeta"],
                 "motivo": self.motivo.currentText(),
